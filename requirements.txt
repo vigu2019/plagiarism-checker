@@ -4,3 +4,7 @@ nltk
 pdfplumber
 python-docx
 gunicorn
+duckduckgo-search
+beautifulsoup4
+lxml
+requests

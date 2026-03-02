@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PlagiaShield — Plagiarism Checker</title>
     <meta name="description"
-        content="Instantly detect plagiarism between two documents or text passages using advanced TF-IDF similarity analysis." />
+        content="Instantly detect plagiarism between two documents or check against the entire web using advanced TF-IDF similarity analysis." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet" />
@@ -15,14 +15,12 @@
 
 <body>
 
-    <!-- Animated background orbs -->
     <div class="bg-orb orb1"></div>
     <div class="bg-orb orb2"></div>
     <div class="bg-orb orb3"></div>
 
     <div class="page-wrapper">
 
-        <!-- Header -->
         <header class="header">
             <div class="logo">
                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -42,25 +40,24 @@
             <p class="header-tagline">AI-Powered Plagiarism Detection</p>
         </header>
 
-        <!-- Main card -->
         <main class="main-card">
 
             <div class="card-header">
                 <h1>Detect Plagiarism Instantly</h1>
-                <p>Paste text or upload files to compare similarity between two documents.</p>
+                <p>Compare two documents — or check against the entire web.</p>
             </div>
 
-            <!-- Input Tabs -->
+            <!-- Mode Tabs -->
             <div class="tabs">
                 <button class="tab-btn active" id="tab-file" onclick="switchTab('file')">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                         <polyline points="14 2 14 8 20 8" />
                     </svg>
                     Upload Files
                 </button>
                 <button class="tab-btn" id="tab-text" onclick="switchTab('text')">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="17" y1="10" x2="3" y2="10" />
                         <line x1="21" y1="6" x2="3" y2="6" />
                         <line x1="21" y1="14" x2="3" y2="14" />
@@ -68,9 +65,18 @@
                     </svg>
                     Paste Text
                 </button>
+                <button class="tab-btn tab-online" id="tab-online" onclick="switchTab('online')">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path
+                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                    </svg>
+                    Check Online
+                </button>
             </div>
 
-            <!-- File Upload Panel -->
+            <!-- ── File Upload Panel (2-doc compare) ── -->
             <div class="panel" id="panel-file">
                 <div class="dropzone-row">
                     <div class="dropzone" id="drop1" onclick="document.getElementById('file1').click()">
@@ -107,7 +113,7 @@
                 </div>
             </div>
 
-            <!-- Text Paste Panel -->
+            <!-- ── Paste Text Panel (2-doc compare) ── -->
             <div class="panel hidden" id="panel-text">
                 <div class="textarea-row">
                     <div class="textarea-group">
@@ -124,32 +130,88 @@
                 </div>
             </div>
 
-            <!-- Submit Button -->
-            <button class="check-btn" id="checkBtn" onclick="runCheck()">
+            <!-- ── Check Online Panel (1-doc vs web) ── -->
+            <div class="panel hidden" id="panel-online">
+                <div class="online-banner">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path
+                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                    </svg>
+                    Upload <strong>one document</strong> — we'll search the web and compare it against real online
+                    sources.
+                </div>
+
+                <div class="online-input-row">
+                    <!-- File tab -->
+                    <div id="online-file-zone">
+                        <div class="dropzone wide-drop" id="drop-online"
+                            onclick="document.getElementById('file-online').click()">
+                            <div class="drop-icon">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="17 8 12 3 7 8" />
+                                    <line x1="12" y1="3" x2="12" y2="15" />
+                                </svg>
+                            </div>
+                            <p class="drop-title">Your Document</p>
+                            <p class="drop-hint">Click or drag & drop a <strong>.txt .pdf .docx</strong> file</p>
+                            <p class="drop-filename" id="name-online">No file chosen</p>
+                            <input type="file" id="file-online" accept=".txt,.pdf,.docx,.doc" hidden
+                                onchange="handleFileSelect(this,'name-online','drop-online')" />
+                        </div>
+                    </div>
+
+                    <!-- Text sub-tab -->
+                    <div id="online-text-zone" class="hidden">
+                        <div class="textarea-group" style="width:100%">
+                            <label>Your Document</label>
+                            <textarea id="text-online" placeholder="Paste your text here to check against the web..."
+                                style="height:180px"></textarea>
+                            <span class="word-count" id="wc-online">0 words</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mini toggle: file vs paste for online mode -->
+                <div class="online-mode-toggle">
+                    <button class="toggle-btn active" id="otab-file" onclick="switchOnlineInput('file')">Upload
+                        File</button>
+                    <button class="toggle-btn" id="otab-text" onclick="switchOnlineInput('text')">Paste Text</button>
+                </div>
+            </div>
+
+            <!-- Submit button -->
+            <button class="check-btn" id="checkBtn" onclick="handleCheck()">
                 <span id="btnText">Check Plagiarism</span>
                 <div class="spinner hidden" id="spinner"></div>
             </button>
 
-            <!-- Error message -->
+            <!-- Error -->
             <div class="error-box hidden" id="errorBox"></div>
 
-            <!-- Results section -->
+            <!-- ── Results: Two-doc compare ── -->
             <div class="results-section hidden" id="resultsSection">
-
-                <!-- Score Card -->
                 <div class="score-card">
                     <div class="score-ring-wrapper">
                         <svg class="score-ring" viewBox="0 0 120 120" width="160" height="160">
                             <circle class="ring-bg" cx="60" cy="60" r="50" />
                             <circle class="ring-fill" id="ringFill" cx="60" cy="60" r="50" stroke-dasharray="314"
                                 stroke-dashoffset="314" />
+                            <defs>
+                                <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#6c63ff" />
+                                    <stop offset="100%" stop-color="#48c6ef" />
+                                </linearGradient>
+                            </defs>
                         </svg>
                         <div class="score-center">
                             <span class="score-pct" id="scoreText">0%</span>
                             <span class="score-sub">Similarity</span>
                         </div>
                     </div>
-
                     <div class="score-details">
                         <div class="label-badge" id="labelBadge">—</div>
                         <div class="meta-pills">
@@ -173,8 +235,6 @@
                         <p class="score-description" id="scoreDesc"></p>
                     </div>
                 </div>
-
-                <!-- Sentence Matches -->
                 <div class="matches-section" id="matchesSection">
                     <div class="matches-header">
                         <h2>Suspicious Sentence Matches</h2>
@@ -182,13 +242,17 @@
                     </div>
                     <div class="matches-list" id="matchesList"></div>
                 </div>
+            </div>
 
+            <!-- ── Results: Online check ── -->
+            <div class="results-section hidden" id="onlineResultsSection">
+                <div class="online-summary-bar" id="onlineSummaryBar"></div>
+                <div class="sources-list" id="sourcesList"></div>
             </div>
 
         </main>
 
         <footer class="footer">Built with TF-IDF & Cosine Similarity · PlagiaShield 2026</footer>
-
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
