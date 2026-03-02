@@ -6,6 +6,8 @@ A modern web app to detect plagiarism between two documents using **TF-IDF + Cos
 ![Flask](https://img.shields.io/badge/Flask-3.x-black?logo=flask)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
+public URL: https://plagiarism-checker-1869.onrender.com
+
 ---
 
 ## ✨ Features
