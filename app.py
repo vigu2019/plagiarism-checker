@@ -7,8 +7,12 @@ import io
 import os
 import traceback
 
-nltk.download('punkt', quiet=True)
-nltk.download('punkt_tab', quiet=True)
+# Download NLTK data to /tmp so it works on Vercel (read-only filesystem except /tmp)
+_NLTK_DIR = '/tmp/nltk_data'
+os.makedirs(_NLTK_DIR, exist_ok=True)
+nltk.data.path.insert(0, _NLTK_DIR)
+nltk.download('punkt',     download_dir=_NLTK_DIR, quiet=True)
+nltk.download('punkt_tab', download_dir=_NLTK_DIR, quiet=True)
 
 app = Flask(__name__)
 
